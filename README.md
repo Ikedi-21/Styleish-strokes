@@ -121,15 +121,13 @@ To spin up the local development server:
     ```bash
     npm run build
     ```
-
 ---
 
 ## 👥 The Development Collective
 
 The application UI, telemetry, and physics were compiled by:
-*   **Amy Somtochukwu Agbowo** – *Principal Architect* (Core System Orchestration)
-*   **Samuel Cherechukwu Egbeh** – *Head of Motion Physics* (Kinetic Velocity Tracking)
-*   **Ikedinachi Franklin Ogbonne** – *Lead UI Designer* (Visual Proportion Models)
+*  **Ikedinachi Franklin Ogbonne**  – *Principal Architect* (Core System Orchestration)
+*    **Amy Somtochukwu Agbowo** – *Lead UI Designer* (Visual Proportion Models)
 *   **Chiemerie Okeke** – *Systems Engineer* (Telemetry Infrastructure)
 *   **Chukwuneta Emmanuel** – *UX Flow Specialist* (Frictionless Content Delivery)
 
