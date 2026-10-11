@@ -1,0 +1,1784 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+index.html
+package.json
+postcss.config.js
+public/vite.svg
+src/App.jsx
+src/components/AboutCalligraphy.jsx
+src/components/AboutUs.jsx
+src/components/CalligraphyLab.jsx
+src/components/ContactForm.jsx
+src/components/Gallery.jsx
+src/components/Hero.jsx
+src/components/LearningResources.jsx
+src/components/Navbar.jsx
+src/components/StickyTicker.jsx
+src/index.css
+src/main.jsx
+tailwind.config.js
+vite.config.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="index.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="StylishStrokes — An ultra-premium digital archive dedicated to the history, execution, and masterclasses of Calligraphy. Explore ink strokes, learn letterforms, and discover the art of beautiful writing." />
+    <meta name="keywords" content="calligraphy, lettering, ink, penmanship, typography, brush strokes, handwriting art" />
+    <title>StylishStrokes — The Art of Beautiful Writing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-ink-black text-pure-white antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="package.json">
+{
+  "name": "stylish-strokes",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "framer-motion": "^11.15.0",
+    "gsap": "^3.12.7",
+    "lenis": "^1.1.18",
+    "lucide-react": "^0.468.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.5",
+    "tailwindcss": "^3.4.17",
+    "postcss": "^8.4.49",
+    "autoprefixer": "^10.4.20",
+    "@tailwindcss/aspect-ratio": "^0.4.2"
+  }
+}
+</file>
+
+<file path="postcss.config.js">
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+</file>
+
+<file path="public/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#000"/>
+  <text x="16" y="24" text-anchor="middle" fill="#fff" font-family="serif" font-size="22" font-weight="bold">S</text>
+</svg>
+</file>
+
+<file path="src/App.jsx">
+import React, { useEffect, useState } from 'react';
+import Lenis from 'lenis';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import AboutCalligraphy from './components/AboutCalligraphy';
+import CalligraphyLab from './components/CalligraphyLab';
+import LearningResources from './components/LearningResources';
+import Gallery from './components/Gallery';
+import AboutUs from './components/AboutUs';
+import ContactForm from './components/ContactForm';
+import StickyTicker from './components/StickyTicker';
+
+export default function App() {
+  const [coords, setCoords] = useState({ lat: "6.4281", lon: "3.4219" }); // default polished coords
+  const [activeSection, setActiveSection] = useState('hero');
+  const [scrollSkew, setScrollSkew] = useState(0);
+
+  useEffect(() => {
+    // Lenis Smooth Scroll Engine
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Geolocation API Telemetry Capturing
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setCoords({
+            lat: pos.coords.latitude.toFixed(4),
+            lon: pos.coords.longitude.toFixed(4)
+          });
+        },
+        (err) => console.log("Telemetry allocation shifted to default matrix.", err)
+      );
+    }
+
+    // Active Section Intersection Observer for Navigation Tracking
+    const sections = ['hero', 'about', 'lab', 'resources', 'gallery', 'team', 'contact'];
+    const observers = sections.map(id => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          setActiveSection(id);
+        }
+      }, { threshold: 0.25 });
+      
+      observer.observe(el);
+      return { observer, el };
+    });
+
+    return () => {
+      lenis.destroy();
+      observers.forEach(obs => obs && obs.observer.unobserve(obs.el));
+    };
+  }, []);
+
+  // Subtle scroll-skew kinetic physics (max 1 degree)
+  useEffect(() => {
+    let lastScroll = window.scrollY;
+    let lastTime = Date.now();
+    let frame;
+
+    const update = () => {
+      const currentScroll = window.scrollY;
+      const currentTime = Date.now();
+      const distance = currentScroll - lastScroll;
+      const duration = Math.max(currentTime - lastTime, 1);
+      
+      const speed = distance / duration;
+      const targetSkew = Math.max(-1, Math.min(1, speed * 0.8));
+      
+      setScrollSkew(prev => prev + (targetSkew - prev) * 0.08);
+      
+      lastScroll = currentScroll;
+      lastTime = currentTime;
+      frame = requestAnimationFrame(update);
+    };
+
+    frame = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <div className="bg-[#000000] text-[#FFFFFF] min-h-screen antialiased select-text font-serif selection:bg-neutral-800 selection:text-white overflow-x-hidden">
+      <Navbar activeSection={activeSection} />
+      <main style={{ transform: `skewY(${scrollSkew}deg)`, transformOrigin: 'center', transition: 'transform 0.1s ease-out' }}>
+        <section id="hero"><Hero /></section>
+        <section id="about"><AboutCalligraphy /></section>
+        <section id="lab"><CalligraphyLab /></section>
+        <section id="resources"><LearningResources /></section>
+        <section id="gallery"><Gallery /></section>
+        <section id="team"><AboutUs /></section>
+        <section id="contact"><ContactForm coords={coords} /></section>
+      </main>
+      <StickyTicker coords={coords} />
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/AboutCalligraphy.jsx">
+import React from 'react';
+import { motion } from 'framer-motion';
+
+const scriptsList = [
+  {
+    title: "Western Calligraphy",
+    sub: "Carolingian & Imperial Capital Scripts",
+    desc: "Built around absolute strict geometric pen angles and rigid vertical tempos, framing the baseline syntax of modern typography."
+  },
+  {
+    title: "Arabic Calligraphy",
+    sub: "Classical Thuluth & Naskh",
+    desc: "A highly complex system completely calculated around proportional ink dot parameters, exhibiting sweeping vertical ascenders and deep fluid curves."
+  },
+  {
+    title: "Oriental Calligraphy",
+    sub: "Traditional Kanji Brush Movement",
+    desc: "Rooted deeply in zen practices, balancing continuous brush compression, line velocity, and the organic absorption metrics of paper."
+  }
+];
+
+export default function AboutCalligraphy() {
+  return (
+    <div className="bg-[#FFFFFF] text-[#000000] min-h-screen py-32 px-8 md:px-16 flex items-center justify-center paper-grid">
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-16">
+        
+        {/* Sticky Structural Header Column */}
+        <div className="lg:col-span-4 lg:sticky lg:top-36 h-fit space-y-6">
+          <span className="font-mono text-xs tracking-widest text-neutral-400 uppercase block">// History & Lineage</span>
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-tight text-neutral-900">
+            Origins & Styles
+          </h2>
+          <p className="text-neutral-500 font-serif text-sm leading-relaxed">
+            Calligraphy balances the friction between utensil control and fluid escape. Explore the distinct design constraints of the three core geographic systems.
+          </p>
+        </div>
+
+        {/* Content Tracking Matrix */}
+        <div className="lg:col-span-8 space-y-16">
+          {scriptsList.map((script, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: index * 0.1 }}
+              key={script.title}
+              className="border-b border-neutral-200 pb-12 last:border-0"
+            >
+              <div className="space-y-1 mb-4">
+                <h3 className="text-2xl md:text-3xl font-serif text-neutral-900 tracking-tight">{script.title}</h3>
+                <p className="font-mono text-xs tracking-wide text-neutral-400 italic">{script.sub}</p>
+              </div>
+              <p className="text-neutral-600 font-serif text-base leading-relaxed max-w-2xl font-light">
+                {script.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/AboutUs.jsx">
+import React from 'react';
+import { motion } from 'framer-motion';
+
+const teamList = [
+  { name: "AMY SOMTOCHUKWU AGBONO", role: "Principal Architect", scope: "Core System Orchestration" },
+  { name: "SAMUEL CHERECHUKWU EGBEH", role: "Head of Motion Physics", scope: "Kinetic Velocity Tracking" },
+  { name: "IKEDINACHI FRANKLIN OGBONNE", role: "Lead UI Designer", scope: "Visual Proportion Models" },
+  { name: "CHIEMERIE OKEKE", role: "Systems Engineer", scope: "Telemetry Infrastructure" },
+  { name: "CHUKWUNETA EMMANUEL", role: "UX Flow Specialist", scope: "Frictionless Content Delivery" }
+];
+
+export default function AboutUs() {
+  return (
+    <div className="bg-[#000000] text-[#FFFFFF] py-32 px-8 md:px-16 border-t border-neutral-900">
+      <div className="max-w-7xl mx-auto">
+        
+        <div className="mb-20">
+          <p className="font-mono text-xs tracking-widest text-neutral-500 mb-2">// Creative Collective</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-tight text-white">The Development Team</h2>
+        </div>
+
+        {/* 5-Column Editorial Profile Assembly Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          {teamList.map((member, idx) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.08 }}
+              key={member.name}
+              className="border-t border-neutral-800 pt-6 flex flex-col justify-between h-72 group"
+            >
+              <div>
+                <span className="font-mono text-[10px] text-neutral-600 block mb-4">[0{idx + 1}]</span>
+                <h3 className="font-serif text-base font-light tracking-tight leading-snug text-neutral-200 group-hover:text-white transition-colors duration-300">
+                  {member.name}
+                </h3>
+              </div>
+              <div className="space-y-1">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-neutral-400">{member.role}</p>
+                <p className="font-serif italic text-xs text-neutral-500">{member.scope}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/CalligraphyLab.jsx">
+import React, { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Trash2, Download, Grid, EyeOff, Sliders, Activity } from 'lucide-react';
+
+const COLORS = [
+  { name: 'Carbon Black', value: '#111111' },
+  { name: 'Cinnabar Red', value: '#E63946' },
+  { name: 'Gold Leaf', value: '#D4AF37' },
+  { name: 'Emerald Jade', value: '#2A9D8F' }
+];
+
+export default function CalligraphyLab() {
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  
+  const [preset, setPreset] = useState('BROAD_EDGE'); // BROAD_EDGE, FLEX_REED, SHODO_BRUSH
+  const [brushSize, setBrushSize] = useState(16);
+  const [inkColor, setInkColor] = useState('#111111');
+  const [dilution, setDilution] = useState(1.0); // opacity
+  const [showGrid, setShowGrid] = useState(true);
+  
+  // Drawing states
+  const [isDrawing, setIsDrawing] = useState(false);
+  const lastPointRef = useRef(null);
+  const lastTimeRef = useRef(null);
+  
+  // Telemetry states
+  const [velocity, setVelocity] = useState(0);
+  const [canvasCoords, setCanvasCoords] = useState({ x: 0, y: 0 });
+  const [pointCount, setPointCount] = useState(0);
+
+  // Resize canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height || 500;
+    
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }, []);
+
+  const getCanvasMousePos = (e) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    
+    return {
+      x: Math.round(clientX - rect.left),
+      y: Math.round(clientY - rect.top)
+    };
+  };
+
+  const drawSegment = (ctx, p1, p2, vel, travelAngle) => {
+    ctx.save();
+    
+    ctx.globalAlpha = dilution;
+    ctx.fillStyle = inkColor;
+    ctx.strokeStyle = inkColor;
+    
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const steps = Math.max(Math.floor(distance), 1);
+    
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const x = p1.x + dx * t;
+      const y = p1.y + dy * t;
+      
+      if (preset === 'BROAD_EDGE') {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(-Math.PI / 4); 
+        ctx.fillRect(-brushSize / 2, -1.5, brushSize, 3);
+        ctx.restore();
+        
+      } else if (preset === 'FLEX_REED') {
+        const nibAngle = -Math.PI / 6; 
+        const diff = Math.abs(Math.sin(travelAngle - nibAngle));
+        const dynamicWidth = Math.max(3, brushSize * (0.3 + 0.7 * diff));
+        
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(nibAngle);
+        ctx.fillRect(-dynamicWidth / 2, -1, dynamicWidth, 2);
+        ctx.restore();
+        
+      } else if (preset === 'SHODO_BRUSH') {
+        const speed = Math.min(vel, 12);
+        const dynamicWidth = Math.max(2, brushSize * (1.2 - speed * 0.08));
+        
+        ctx.beginPath();
+        ctx.arc(x, y, dynamicWidth / 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        if (vel > 6 && i % 4 === 0) {
+          ctx.beginPath();
+          ctx.arc(x + (Math.random() - 0.5) * dynamicWidth, y + (Math.random() - 0.5) * dynamicWidth, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    
+    ctx.restore();
+  };
+
+  const startDrawing = (e) => {
+    e.preventDefault();
+    const pos = getCanvasMousePos(e);
+    setIsDrawing(true);
+    lastPointRef.current = pos;
+    lastTimeRef.current = Date.now();
+    setPointCount(1);
+  };
+
+  const draw = (e) => {
+    if (!isDrawing) return;
+    e.preventDefault();
+    
+    const pos = getCanvasMousePos(e);
+    setCanvasCoords(pos);
+    
+    const currentTime = Date.now();
+    const timeDiff = Math.max(currentTime - lastTimeRef.current, 1);
+    
+    const dx = pos.x - lastPointRef.current.x;
+    const dy = pos.y - lastPointRef.current.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    
+    const currentVelocity = dist / timeDiff;
+    setVelocity(Math.round(currentVelocity * 100) / 10);
+    
+    const travelAngle = Math.atan2(dy, dx);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      drawSegment(ctx, lastPointRef.current, pos, currentVelocity, travelAngle);
+    }
+    
+    lastPointRef.current = pos;
+    lastTimeRef.current = currentTime;
+    setPointCount(prev => prev + 1);
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+    lastPointRef.current = null;
+    lastTimeRef.current = null;
+    setVelocity(0);
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    setPointCount(0);
+  };
+
+  const exportCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const image = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.download = `strokes_spec_${preset.toLowerCase()}.png`;
+    link.href = image;
+    link.click();
+  };
+
+  return (
+    <div className="bg-[#000000] text-[#FFFFFF] min-h-screen py-32 px-8 md:px-16 border-t border-neutral-800 flex flex-col justify-center">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+        
+        {/* Left column: Telemetry Controls */}
+        <div className="lg:col-span-4 flex flex-col justify-between space-y-8">
+          <div>
+            <span className="font-mono text-xs tracking-widest text-neutral-500 block mb-2">// INK PRESSURE LAB</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-light tracking-tight uppercase mb-6">Stroke Engine</h2>
+            <p className="text-neutral-400 font-serif font-light text-sm leading-relaxed max-w-sm">
+              Interact directly with calligraphic physics. Test nib angles, speed drag resistance, and ink flow dynamics.
+            </p>
+          </div>
+
+          {/* Controls Panels */}
+          <div className="space-y-6 border-t border-neutral-800 pt-6">
+            {/* Nib Preset Grid */}
+            <div className="space-y-2">
+              <span className="font-mono text-[10px] text-neutral-500 block uppercase">NIB GEOMETRY PRESET</span>
+              <div className="grid grid-cols-3 gap-2">
+                {['BROAD_EDGE', 'FLEX_REED', 'SHODO_BRUSH'].map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setPreset(type)}
+                    className={`border px-2 py-3 text-[10px] font-mono tracking-wider uppercase transition-all ${
+                      preset === type ? 'bg-white text-black border-white' : 'border-neutral-800 text-white hover:border-neutral-400'
+                    }`}
+                  >
+                    {type.replace('_', ' ')}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Brush settings */}
+            <div className="space-y-4 font-mono text-[10px]">
+              <div>
+                <div className="flex justify-between text-neutral-500 mb-2">
+                  <span>NIB WEIGHT (SIZE)</span>
+                  <span className="text-white font-bold">{brushSize}MM</span>
+                </div>
+                <input 
+                  type="range" min="4" max="48" step="1" value={brushSize}
+                  onChange={(e) => setBrushSize(Number(e.target.value))}
+                  className="w-full accent-white bg-neutral-800 h-[2px] appearance-none cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <div className="flex justify-between text-neutral-500 mb-2">
+                  <span>INK DILUTION (WATER RATIO)</span>
+                  <span className="text-white font-bold">{Math.round(dilution * 100)}%</span>
+                </div>
+                <input 
+                  type="range" min="0.1" max="1.0" step="0.05" value={dilution}
+                  onChange={(e) => setDilution(Number(e.target.value))}
+                  className="w-full accent-white bg-neutral-800 h-[2px] appearance-none cursor-pointer"
+                />
+              </div>
+            </div>
+
+            {/* Color grid */}
+            <div className="space-y-2">
+              <span className="font-mono text-[10px] text-neutral-500 block uppercase">INK FORMULATION COLOR</span>
+              <div className="flex gap-3">
+                {COLORS.map((color) => (
+                  <button
+                    key={color.value}
+                    onClick={() => setInkColor(color.value)}
+                    style={{ backgroundColor: color.value === '#111111' ? '#1c1c1c' : color.value }}
+                    className={`w-8 h-8 rounded-full border-2 transition-all ${
+                      inkColor === color.value ? 'border-white scale-110' : 'border-transparent hover:scale-105'
+                    }`}
+                    title={color.name}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="grid grid-cols-2 gap-4 border-t border-neutral-800 pt-6">
+            <button 
+              onClick={clearCanvas}
+              className="flex items-center justify-center gap-2 border border-neutral-800 hover:border-neutral-400 py-3 text-xs font-mono tracking-widest uppercase transition-colors"
+            >
+              <Trash2 size={12} /> CLEAR
+            </button>
+            <button 
+              onClick={exportCanvas}
+              className="flex items-center justify-center gap-2 bg-white text-black py-3 text-xs font-mono tracking-widest uppercase hover:bg-neutral-200 transition-colors"
+            >
+              <Download size={12} /> EXPORT
+            </button>
+          </div>
+        </div>
+
+        {/* Right column: Interactive Canvas */}
+        <div className="lg:col-span-8 flex flex-col justify-between border border-neutral-800 relative min-h-[500px]">
+          
+          {/* Practice Canvas Header */}
+          <div className="flex justify-between items-center bg-[#070707] px-6 py-3 border-b border-neutral-800 font-mono text-[10px] tracking-widest uppercase text-neutral-400">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-neutral-400"></span>
+              <span>TELEMETRY CHANNEL</span>
+            </div>
+            
+            <button 
+              onClick={() => setShowGrid(!showGrid)}
+              className="flex items-center gap-2 hover:text-white transition-colors"
+            >
+              {showGrid ? (
+                <>
+                  <EyeOff size={12} /> HIDE GUIDELINES
+                </>
+              ) : (
+                <>
+                  <Grid size={12} /> SHOW GUIDELINES
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Actual Canvas wrapper */}
+          <div className="flex-1 bg-white relative overflow-hidden" ref={containerRef}>
+            
+            {/* Calligraphic guideline grids */}
+            {showGrid && (
+              <div className="absolute inset-0 pointer-events-none opacity-[0.06] select-none flex flex-col justify-around px-8">
+                <div className="absolute inset-0" style={{
+                  backgroundImage: 'repeating-linear-gradient(-30deg, transparent, transparent 50px, #000 50px, #000 51px)',
+                }} />
+                
+                <div className="w-full border-b border-dashed border-black h-0"></div>
+                <div className="w-full border-b border-black h-0"></div>
+                <div className="w-full border-b border-dashed border-black h-0"></div>
+                <div className="w-full border-b border-black h-0"></div>
+                <div className="w-full border-b border-dashed border-black h-0"></div>
+              </div>
+            )}
+
+            {/* Drawing Canvas */}
+            <canvas
+              ref={canvasRef}
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+              onTouchStart={startDrawing}
+              onTouchMove={draw}
+              onTouchEnd={stopDrawing}
+              className="w-full h-full relative z-10 block cursor-crosshair"
+            />
+          </div>
+
+          {/* Telemetry Footer Dashboard */}
+          <div className="bg-[#050505] border-t border-neutral-800 p-6 grid grid-cols-2 md:grid-cols-4 gap-4 font-mono text-[10px] text-neutral-500 tracking-wider">
+            <div>
+              <p className="text-neutral-600">COORD_X</p>
+              <p className="text-neutral-200 mt-0.5 tabular-nums">{canvasCoords.x}PX</p>
+            </div>
+            <div>
+              <p className="text-neutral-600">COORD_Y</p>
+              <p className="text-neutral-200 mt-0.5 tabular-nums">{canvasCoords.y}PX</p>
+            </div>
+            <div>
+              <p className="text-neutral-600 flex items-center gap-1">
+                <Activity size={10} /> VELOCITY
+              </p>
+              <p className="text-neutral-200 mt-0.5 tabular-nums">{velocity} PX/MS</p>
+            </div>
+            <div>
+              <p className="text-neutral-600">POINTS</p>
+              <p className="text-neutral-200 mt-0.5 tabular-nums">{pointCount}</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/ContactForm.jsx">
+import React, { useState } from 'react';
+
+export default function ContactForm({ coords }) {
+  const [fields, setFields] = useState({ name: '', email: '', message: '' });
+  const [submissionState, setSubmissionState] = useState('READY');
+
+  const dispatchForm = (e) => {
+    e.preventDefault();
+    setSubmissionState('SENDING');
+    setTimeout(() => {
+      setSubmissionState('COMPLETE');
+      setFields({ name: '', email: '', message: '' });
+      setTimeout(() => setSubmissionState('READY'), 3000);
+    }, 1500);
+  };
+
+  return (
+    <div className="bg-[#FBFBFA] text-[#000000] min-h-screen py-32 px-8 md:px-16 flex items-center justify-center border-t border-neutral-200 paper-grid">
+      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
+        
+        {/* Controlled Input Section */}
+        <div className="lg:col-span-7 space-y-10">
+          <div className="space-y-2">
+            <span className="font-mono text-xs tracking-widest text-neutral-400 block">// Get In Touch</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-tight text-neutral-900">Feedback & Inquiries</h2>
+          </div>
+
+          <form onSubmit={dispatchForm} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex flex-col border-b border-neutral-300 pb-2 focus-within:border-black transition-colors duration-300">
+                <label className="font-mono text-[10px] uppercase tracking-wider text-neutral-400">Your Full Identifier</label>
+                <input 
+                  type="text" required value={fields.name}
+                  onChange={(e) => setFields({...fields, name: e.target.value})}
+                  className="bg-transparent border-none outline-none p-0 mt-2 font-serif text-base text-neutral-900"
+                />
+              </div>
+              <div className="flex flex-col border-b border-neutral-300 pb-2 focus-within:border-black transition-colors duration-300">
+                <label className="font-mono text-[10px] uppercase tracking-wider text-neutral-400">Digital Return Node (Email)</label>
+                <input 
+                  type="email" required value={fields.email}
+                  onChange={(e) => setFields({...fields, email: e.target.value})}
+                  className="bg-transparent border-none outline-none p-0 mt-2 font-mono text-sm text-neutral-900"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col border-b border-neutral-300 pb-2 focus-within:border-black transition-colors duration-300">
+              <label className="font-mono text-[10px] uppercase tracking-wider text-neutral-400">Message / Suggestions Parameters</label>
+              <textarea 
+                rows={3} required value={fields.message}
+                onChange={(e) => setFields({...fields, message: e.target.value})}
+                className="bg-transparent border-none outline-none p-0 mt-2 font-serif text-base text-neutral-900 resize-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={submissionState === 'SENDING'}
+              className="w-full bg-[#000000] text-[#FFFFFF] px-8 py-4 font-mono text-xs tracking-widest uppercase transition-colors duration-300 hover:bg-neutral-800"
+            >
+              {submissionState === 'READY' && 'Transmit Dispatch'}
+              {submissionState === 'SENDING' && 'Uploading Packets...'}
+              {submissionState === 'COMPLETE' && '✓ Transmission Dispatched Successfully'}
+            </button>
+          </form>
+        </div>
+
+        {/* Dashboard Geolocation Interface */}
+        <div className="lg:col-span-5 border border-neutral-200 bg-white p-8 flex flex-col justify-between h-96 lg:h-auto dark-grid">
+          <div className="space-y-6">
+            <div className="flex justify-between items-center border-b border-neutral-100 pb-4">
+              <span className="font-mono text-[11px] tracking-wider text-neutral-400 uppercase">// Device Hardware Telemetry</span>
+              <span className="h-2 w-2 bg-neutral-900 rounded-full animate-ping"></span>
+            </div>
+            
+            <div className="space-y-3 font-mono text-xs text-neutral-600">
+              <p>DEVICE_LATITUDE: <span className="text-black font-bold tracking-normal">{coords.lat}° N</span></p>
+              <p>DEVICE_LONGITUDE: <span className="text-black font-bold tracking-normal">{coords.lon}° E</span></p>
+              <p>CONNECTION_NODE: <span className="text-black font-bold">STYLISH_STROKES_LIVE</span></p>
+            </div>
+          </div>
+
+          {/* Abstract Geometric Grid Map Simulation */}
+          <div className="relative border border-neutral-100 flex-1 my-6 overflow-hidden bg-neutral-50 grid grid-cols-8 grid-rows-6 opacity-80 min-h-[140px]">
+            {Array.from({ length: 48 }).map((_, idx) => (
+              <div key={idx} className="border-r border-b border-neutral-200/40 flex items-center justify-center font-mono text-[8px] text-neutral-300 select-none">
+                {idx % 9 === 0 && "·"}
+              </div>
+            ))}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div className="h-6 w-6 border border-black rounded-full animate-ping absolute"></div>
+              <div className="h-2 w-2 bg-black rounded-full z-10"></div>
+              <span className="font-mono text-[9px] bg-black text-white px-1.5 py-0.5 mt-3 tracking-wider uppercase font-bold">Location Confirmed</span>
+            </div>
+          </div>
+
+          <p className="font-mono text-[10px] text-neutral-400 leading-normal">
+            Telemetry extracted using global hardware metrics. Coordinates dynamically map localized routing nodes securely.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/Gallery.jsx">
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Compass } from 'lucide-react';
+
+const imageryArchive = [
+  { 
+    id: 1, 
+    url: 'https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&w=800&q=80', 
+    title: 'Fluid Ligature Saturation',
+    specs: { script: 'Western Gothic', nib: 'Metal Broad Edge', paper: 'Pure Cotton Vellum', structure: '45° slant axes, strict vertical stem guidelines' }
+  },
+  { 
+    id: 2, 
+    url: 'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=800&q=80', 
+    title: 'Steel Nib Angle Grid',
+    specs: { script: 'Copperplate Spencerian', nib: 'Fine Flexible Steel Point', paper: 'Smooth Calligraphy Card', structure: '55° italic slant grid, dynamic hairline thickness' }
+  },
+  { 
+    id: 3, 
+    url: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80', 
+    title: 'Monastic Script Blueprint',
+    specs: { script: 'Roman Capitals', nib: 'Flat Brush Calibrator', paper: 'Pressed Rag Board', structure: 'Circular geometric bounds, golden section margins' }
+  },
+  { 
+    id: 4, 
+    url: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=800&q=80', 
+    title: 'Fibrous Canvas Absorption',
+    specs: { script: 'East Asian Kanji', nib: 'Bamboo Wolf-Hair Brush', paper: 'Mulberry Xuan Washi', structure: 'Dynamic weight modulation, singular stroke focus' }
+  }
+];
+
+export default function Gallery() {
+  const [modalItem, setModalItem] = useState(null);
+  const [showBlueprint, setShowBlueprint] = useState(false);
+
+  return (
+    <div className="bg-[#FBFBFA] text-[#000000] py-32 px-8 md:px-16 border-t border-neutral-200 paper-grid">
+      <div className="max-w-7xl w-full mx-auto">
+        
+        <div className="mb-16">
+          <p className="font-mono text-xs tracking-widest text-neutral-400 mb-2">// Curated Texture Exhibits</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-tight text-neutral-900">The Script Gallery</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {imageryArchive.map((image) => (
+            <div
+              key={image.id}
+              onClick={() => {
+                setModalItem(image);
+                setShowBlueprint(false);
+              }}
+              className="cursor-pointer group flex flex-col space-y-4"
+            >
+              <div className="overflow-hidden bg-neutral-200 aspect-[3/4]">
+                <img 
+                  src={image.url} 
+                  alt={image.title} 
+                  loading="lazy"
+                  className="w-full h-full object-cover filter grayscale contrast-115 transition-transform duration-700 ease-[0.16, 1, 0.3, 1] group-hover:scale-102"
+                />
+              </div>
+              <div className="flex justify-between items-baseline border-t border-neutral-200 pt-2 px-1">
+                <h4 className="font-serif text-sm text-neutral-800 font-light">{image.title}</h4>
+                <span className="font-mono text-[10px] text-neutral-400">[0{image.id}]</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Cinematic Modal Element */}
+      <AnimatePresence>
+        {modalItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            onClick={() => setModalItem(null)}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xs flex items-center justify-center p-6 md:p-12 cursor-zoom-out"
+          >
+            <button 
+              onClick={() => setModalItem(null)}
+              className="absolute top-8 right-8 text-neutral-400 hover:text-white transition-colors"
+            >
+              <X size={26} />
+            </button>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 15 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-5xl w-full bg-[#0d0d0d] border border-neutral-800 p-2 flex flex-col md:flex-row items-stretch"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Image box */}
+              <div className="relative flex-1 bg-black flex items-center justify-center min-h-[350px] overflow-hidden">
+                <img 
+                  src={modalItem.url} 
+                  alt={modalItem.title} 
+                  className="max-h-[65vh] w-auto object-contain mx-auto filter grayscale contrast-110" 
+                />
+
+                {/* Thin, Golden Geometry Blueprint grid lines */}
+                {showBlueprint && (
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none stroke-[#D4AF37] opacity-45" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="0" y1="38.2" x2="100" y2="38.2" strokeWidth="0.08" strokeDasharray="1,2" />
+                    <line x1="0" y1="61.8" x2="100" y2="61.8" strokeWidth="0.08" strokeDasharray="1,2" />
+                    <line x1="38.2" y1="0" x2="38.2" y2="100" strokeWidth="0.08" strokeDasharray="1,2" />
+                    <line x1="61.8" y1="0" x2="61.8" y2="100" strokeWidth="0.08" strokeDasharray="1,2" />
+                    
+                    <circle cx="50" cy="50" r="30" fill="none" strokeWidth="0.08" strokeDasharray="1,2" />
+                    <circle cx="50" cy="50" r="12" fill="none" strokeWidth="0.08" />
+                    
+                    <line x1="0" y1="0" x2="100" y2="100" strokeWidth="0.06" strokeDasharray="1,3" />
+                    <line x1="100" y1="0" x2="0" y2="100" strokeWidth="0.06" strokeDasharray="1,3" />
+
+                    <text x="4" y="8" fill="#D4AF37" fontSize="1.5" fontFamily="serif" fontStyle="italic">[Ratio: 1.618]</text>
+                    <text x="4" y="94" fill="#D4AF37" fontSize="1.5" fontFamily="monospace">[Metrics: Pass]</text>
+                  </svg>
+                )}
+              </div>
+
+              {/* Sidebar detail board */}
+              <div className="w-full md:w-80 bg-[#0d0d0d] text-white p-8 flex flex-col justify-between border-t md:border-t-0 md:border-l border-neutral-800">
+                <div className="space-y-6">
+                  <div>
+                    <span className="font-mono text-[10px] text-neutral-500 block uppercase tracking-wider">// Spec Overview</span>
+                    <h3 className="text-xl font-serif italic font-normal text-white mt-1">{modalItem.title}</h3>
+                  </div>
+
+                  <div className="border-t border-neutral-800 pt-4 space-y-4 font-serif text-xs text-neutral-400">
+                    <div>
+                      <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest">Script Lineage</p>
+                      <p className="text-neutral-200 mt-0.5">{modalItem.specs.script}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest">Pen / Tool</p>
+                      <p className="text-neutral-200 mt-0.5">{modalItem.specs.nib}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest">Medium</p>
+                      <p className="text-neutral-200 mt-0.5">{modalItem.specs.paper}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[9px] text-neutral-600 uppercase tracking-widest">Proportion Notes</p>
+                      <p className="text-neutral-300 leading-relaxed mt-1 font-light italic">{modalItem.specs.structure}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-4 space-y-3">
+                  <button 
+                    onClick={() => setShowBlueprint(!showBlueprint)}
+                    className={`w-full flex items-center justify-center gap-2 border px-4 py-3 font-mono text-[10px] tracking-widest uppercase transition-all ${
+                      showBlueprint ? 'bg-[#D4AF37] text-black border-[#D4AF37]' : 'border-neutral-700 text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <Compass size={12} className={showBlueprint ? 'animate-spin' : ''} />
+                    {showBlueprint ? 'Hide Geometry' : 'Geometry Grid'}
+                  </button>
+                  
+                  <button 
+                    onClick={() => setModalItem(null)}
+                    className="w-full bg-white text-black py-3 font-mono text-[10px] tracking-widest uppercase hover:bg-neutral-200 transition-colors text-center block"
+                  >
+                    Close Image
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/Hero.jsx">
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function Hero() {
+  return (
+    <div className="relative min-h-screen bg-[#000000] text-[#FFFFFF] flex flex-col justify-between pt-36 pb-20 px-8 md:px-16 overflow-hidden bg-cover bg-center">
+      
+      {/* Precision fluid ink vector animation path mapping */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none flex items-center justify-center">
+        <svg width="100%" height="100%" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-cover">
+          <motion.path 
+            d="M50 450C250 200 450 500 700 150C900 -50 1050 200 1150 100" 
+            stroke="white" 
+            strokeWidth="1.5" 
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 3, ease: [0.16, 1, 0.3, 1] }}
+          />
+        </svg>
+      </div>
+
+      <div className="max-w-5xl z-10 my-auto">
+        <p className="font-mono text-xs tracking-[0.4em] text-neutral-400 uppercase mb-6">
+          // Digital Luxury Archive
+        </p>
+        
+        <h1 className="text-5xl md:text-[7.5rem] font-serif font-normal leading-[1.05] tracking-tight text-white">
+          <span className="block overflow-hidden py-1">
+            <motion.span 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              className="block"
+            >
+              Mastering the Elegant
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden py-1 italic text-neutral-400 pl-8 md:pl-20">
+            <motion.span 
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+              className="block font-light"
+            >
+              Cadence of Calligraphy
+            </motion.span>
+          </span>
+        </h1>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end z-10 border-t border-neutral-800 pt-8 mt-12">
+        <div className="md:col-span-7">
+          <p className="text-base text-neutral-400 font-serif leading-relaxed max-w-xl">
+            Unveiling comprehensive historical data across foundational lineages. Experience structural exercises designed to bridge the gap between historic technique and contemporary design.
+          </p>
+        </div>
+        <div className="md:col-span-5 flex justify-end">
+          <button 
+            onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}
+            className="w-full md:w-auto border border-white/30 hover:border-white px-8 py-4 font-mono text-xs tracking-widest uppercase text-white transition-colors duration-300"
+          >
+            Explore Historical Origins
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/LearningResources.jsx">
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDownToLine, BookOpen, Sparkles, RefreshCw, Download } from 'lucide-react';
+
+const tierSheets = {
+  Beginner: [
+    { id: 'b1', title: 'Foundational Linear Inklings', file: 'Strokes_Beginner_Linear.pdf', type: 'Basic Grids' },
+    { id: 'b2', title: 'Calculated Oval Adjustments', file: 'Strokes_Beginner_Ovals.pdf', type: 'Loop Frameworks' }
+  ],
+  Advanced: [
+    { id: 'a1', title: 'Thuluth Geometric Intersections', file: 'Strokes_Advanced_Thuluth.pdf', type: 'Proportional Dots' },
+    { id: 'a2', title: 'Blackletter Rhythm Matrix', file: 'Strokes_Advanced_Fraktur.pdf', type: 'Angle Compression' },
+    { id: 'a3', title: 'Asymmetric Brush Variance', file: 'Strokes_Advanced_Brush.pdf', type: 'Velocity Fluctuations' }
+  ]
+};
+
+export default function LearningResources() {
+  const [activeTier, setActiveTier] = useState('Advanced');
+  const [activeDownloadId, setActiveDownloadId] = useState(null);
+
+  // Tracing customizer states
+  const [tracingText, setTracingText] = useState('FLOW');
+  const [fontPreset, setFontPreset] = useState('SERIF_ITALIC'); // SERIF_ITALIC, SANS_CAPS
+  const [showGuides, setShowGuides] = useState(true);
+
+  // Drawing refs
+  const tracingCanvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+
+  const simulateDownload = (sheet) => {
+    setActiveDownloadId(sheet.id);
+    setTimeout(() => {
+      setActiveDownloadId(null);
+      alert(`FILE DISPATCH SUCCESS\nDocument: ${sheet.file}\nPayload Spec: Formatted Guidelines & Font Descriptions Template.`);
+    }, 1200);
+  };
+
+  useEffect(() => {
+    const canvas = tracingCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height || 220;
+    
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }, [tracingText, fontPreset]);
+
+  const getMousePos = (e) => {
+    const canvas = tracingCanvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+  };
+
+  const startTrace = (e) => {
+    e.preventDefault();
+    const pos = getMousePos(e);
+    setIsDrawing(true);
+    lastPos.current = pos;
+  };
+
+  const trace = (e) => {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const canvas = tracingCanvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const pos = getMousePos(e);
+
+    ctx.beginPath();
+    ctx.strokeStyle = '#D4AF37'; // Elegant Gold
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.moveTo(lastPos.current.x, lastPos.current.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+
+    lastPos.current = pos;
+  };
+
+  const stopTrace = () => {
+    setIsDrawing(false);
+  };
+
+  const clearTrace = () => {
+    const canvas = tracingCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  const exportCustomSVG = () => {
+    const fontName = fontPreset === 'SERIF_ITALIC' ? 'Playfair Display, Georgia, serif' : 'Bebas Neue, sans-serif';
+    const fontStyle = fontPreset === 'SERIF_ITALIC' ? 'italic' : 'normal';
+    const letterSpacing = fontPreset === 'SANS_CAPS' ? '0.2em' : 'normal';
+
+    const svgContent = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" style="background:#FBFBFA; font-family: Playfair Display, serif;">
+        <rect x="0" y="0" width="800" height="60" fill="#000000" />
+        <text x="30" y="38" fill="#FFFFFF" font-size="14" font-weight="normal" letter-spacing="1">STYLISHSTROKES // CUSTOM PRACTICE SHEET</text>
+        <text x="770" y="35" fill="#888888" font-size="9" text-anchor="end" font-family="monospace">DATE: ${new Date().toLocaleDateString()}</text>
+        
+        <g stroke="#E0E0DF" stroke-dasharray="4,4" stroke-width="1">
+          <line x1="30" y1="180" x2="770" y2="180" />
+          <line x1="30" y1="220" x2="770" y2="220" stroke="#CCCCCC" stroke-dasharray="0" />
+          <line x1="30" y1="260" x2="770" y2="260" />
+        </g>
+        
+        <text x="400" y="245" fill="#EAEAE9" font-size="70" text-anchor="middle" font-family="${fontName}" font-style="${fontStyle}" letter-spacing="${letterSpacing}">
+          ${tracingText.toUpperCase()}
+        </text>
+        
+        ${fontPreset === 'SERIF_ITALIC' ? `
+          <g stroke="rgba(0,0,0,0.03)" stroke-width="1">
+            <line x1="150" y1="100" x2="100" y2="320" />
+            <line x1="250" y1="100" x2="200" y2="320" />
+            <line x1="350" y1="100" x2="300" y2="320" />
+            <line x1="450" y1="100" x2="400" y2="320" />
+            <line x1="550" y1="100" x2="500" y2="320" />
+            <line x1="650" y1="100" x2="600" y2="320" />
+          </g>
+        ` : ''}
+        <line x1="30" y1="350" x2="770" y2="350" stroke="#111111" stroke-width="0.5" />
+        <text x="30" y="370" fill="#333333" font-size="9" font-style="italic">Preserving traditional letterforms digitally</text>
+      </svg>
+    `;
+
+    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = `practice_sheet_${tracingText.toLowerCase()}.svg`;
+    link.href = url;
+    link.click();
+  };
+
+  return (
+    <div className="bg-[#000000] text-[#FFFFFF] min-h-screen py-32 px-8 md:px-16 flex flex-col items-center justify-center border-t border-neutral-900">
+      <div className="max-w-7xl w-full space-y-24">
+        
+        {/* Practice Layout Hub Cards Grid */}
+        <div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-neutral-800 pb-8 mb-16 gap-6">
+            <div className="space-y-2">
+              <span className="font-mono text-xs tracking-widest text-neutral-500 block">// Educational Schematics</span>
+              <h2 className="text-4xl md:text-5xl font-serif font-normal tracking-tight">Practice Layout Hub</h2>
+            </div>
+
+            {/* Luxury Switch Component */}
+            <div className="flex border border-white/20 p-1 bg-neutral-950">
+              {['Beginner', 'Advanced'].map((tier) => (
+                <button
+                  key={tier}
+                  onClick={() => setActiveTier(tier)}
+                  className={`px-6 py-2 font-mono text-xs tracking-wider uppercase transition-all duration-300 ${
+                    activeTier === tier ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
+                  }`}
+                >
+                  {tier === 'Beginner' ? 'Kids & Starters' : 'Masterclass Level'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence mode="popLayout">
+              {tierSheets[activeTier].map((sheet) => (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+                  key={sheet.id}
+                  className="border border-neutral-800 bg-neutral-950/40 p-8 flex flex-col justify-between h-80 hover:border-neutral-700 transition-colors duration-300"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="text-neutral-400 border border-neutral-800 p-3 bg-neutral-900">
+                      <BookOpen size={18} />
+                    </div>
+                    <span className="font-mono text-[10px] tracking-widest text-neutral-500 uppercase bg-neutral-900 px-2 py-1">
+                      {sheet.type}
+                    </span>
+                  </div>
+
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-serif text-neutral-100 tracking-tight font-light">{sheet.title}</h3>
+                    <button
+                      onClick={() => simulateDownload(sheet)}
+                      disabled={activeDownloadId !== null}
+                      className="w-full flex items-center justify-between border border-neutral-700 hover:border-white px-4 py-3 font-mono text-xs tracking-wider uppercase transition-colors duration-300 text-neutral-300 hover:text-white"
+                    >
+                      <span>{activeDownloadId === sheet.id ? 'Extracting File...' : 'Download Practice Grid'}</span>
+                      <ArrowDownToLine size={13} />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+
+        {/* Live Tracing Customizer Module */}
+        <div className="border border-neutral-800 p-8 bg-[#050505] rounded-none">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-neutral-800 pb-6 mb-8 gap-6">
+            <div>
+              <span className="font-mono text-xs tracking-widest text-neutral-500 block mb-1 flex items-center gap-2">
+                <Sparkles size={12} className="text-[#D4AF37]" /> // WORKSPACE
+              </span>
+              <h3 className="text-2xl md:text-3xl font-serif font-light tracking-tight uppercase">LIVE TRACING BLUEPRINT CREATOR</h3>
+            </div>
+
+            {/* Customizer controls */}
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex border border-neutral-800 p-1 bg-black">
+                <button 
+                  onClick={() => setFontPreset('SERIF_ITALIC')} 
+                  className={`px-3 py-1.5 font-mono text-[9px] tracking-wider font-bold ${fontPreset === 'SERIF_ITALIC' ? 'bg-white text-black' : 'text-white'}`}
+                >
+                  WESTERN ITALIC
+                </button>
+                <button 
+                  onClick={() => setFontPreset('SANS_CAPS')} 
+                  className={`px-3 py-1.5 font-mono text-[9px] tracking-wider font-bold ${fontPreset === 'SANS_CAPS' ? 'bg-white text-black' : 'text-white'}`}
+                >
+                  MODERN CAPITALS
+                </button>
+              </div>
+
+              <button 
+                onClick={() => setShowGuides(!showGuides)}
+                className={`px-4 py-2 border font-mono text-[9px] tracking-wider uppercase transition-all ${
+                  showGuides ? 'bg-white/5 border-neutral-700 text-white' : 'border-neutral-800 text-neutral-500'
+                }`}
+              >
+                {showGuides ? 'GUIDES: ON' : 'GUIDES: OFF'}
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            {/* Input Config side */}
+            <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <div className="flex flex-col border-b border-neutral-800 pb-2 focus-within:border-neutral-500 transition-colors">
+                  <label className="font-mono text-[9px] text-neutral-500 tracking-wider uppercase">ENTER CHAR SEQUENCE</label>
+                  <input 
+                    type="text"
+                    maxLength={10}
+                    value={tracingText}
+                    onChange={(e) => setTracingText(e.target.value.replace(/[^A-Za-z]/gi, ''))}
+                    className="bg-transparent border-0 outline-none p-0 mt-1 font-serif text-lg italic text-white tracking-widest uppercase font-light"
+                    placeholder="TYPE WORD"
+                  />
+                </div>
+                <p className="font-serif text-[13px] text-neutral-400 leading-relaxed font-light italic">
+                  Input letters to dynamically generate dotted letterforms. Hover over the workspace, drag your cursor, and trace the stroke geometries in gold leaf.
+                </p>
+              </div>
+
+              <div className="flex gap-4 font-mono text-[10px]">
+                <button 
+                  onClick={clearTrace}
+                  className="flex-1 flex items-center justify-center gap-2 border border-neutral-800 hover:border-neutral-400 py-3 tracking-widest uppercase transition-colors"
+                >
+                  <RefreshCw size={12} /> RESET TRACE
+                </button>
+                <button 
+                  onClick={exportCustomSVG}
+                  className="flex-1 flex items-center justify-center gap-2 bg-white text-black py-3 tracking-widest uppercase hover:bg-neutral-200 transition-colors"
+                >
+                  <Download size={12} /> EXPORT SVG
+                </button>
+              </div>
+            </div>
+
+            {/* Tracing Area Workspace */}
+            <div className="lg:col-span-8 border border-neutral-800 h-64 bg-black relative flex items-center justify-center overflow-hidden">
+              
+              {/* Backing guidelines */}
+              {showGuides && (
+                <div className="absolute inset-0 pointer-events-none flex flex-col justify-center gap-8 px-4 opacity-10">
+                  <div className="w-full border-t border-dashed border-white"></div>
+                  <div className="w-full border-t border-white"></div>
+                  <div className="w-full border-t border-dashed border-white"></div>
+                </div>
+              )}
+
+              {/* Dotted target text layout */}
+              <div 
+                className="absolute inset-0 flex items-center justify-center select-none pointer-events-none text-neutral-800 text-[60px] md:text-[76px] font-light uppercase text-center"
+                style={{
+                  fontFamily: fontPreset === 'SERIF_ITALIC' ? 'Playfair Display, Georgia, serif' : 'Bebas Neue, sans-serif',
+                  fontStyle: fontPreset === 'SERIF_ITALIC' ? 'italic' : 'normal',
+                  letterSpacing: fontPreset === 'SANS_CAPS' ? '0.15em' : 'normal',
+                }}
+              >
+                <span className="opacity-25 select-none font-light" style={{
+                  textShadow: '0 0 1px rgba(255,255,255,0.2)',
+                  backgroundImage: 'radial-gradient(rgba(255,255,255,0.1) 15%, transparent 16%)',
+                  backgroundSize: '3px 3px',
+                  color: 'transparent',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  WebkitTextStroke: '1.2px rgba(255,255,255,0.3)'
+                }}>
+                  {tracingText || 'FLOW'}
+                </span>
+              </div>
+
+              {/* Interactive Tracing Draw Layer */}
+              <canvas
+                ref={tracingCanvasRef}
+                onMouseDown={startTrace}
+                onMouseMove={trace}
+                onMouseUp={stopTrace}
+                onMouseLeave={stopTrace}
+                onTouchStart={startTrace}
+                onTouchMove={trace}
+                onTouchEnd={stopTrace}
+                className="w-full h-full relative z-10 block cursor-crosshair"
+              />
+
+              {/* Bottom telemetry overlay badge */}
+              <div className="absolute bottom-3 right-4 font-mono text-[9px] text-neutral-600 pointer-events-none uppercase tracking-wider">
+                // SYSTEM_TRACEPAD // INPUT_INDEX: ${tracingText.length}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+</file>
+
+<file path="src/components/Navbar.jsx">
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+
+export default function Navbar({ activeSection }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [visitorCount, setVisitorCount] = useState(3842);
+
+  useEffect(() => {
+    const internalClock = setInterval(() => {
+      setVisitorCount(prev => prev + Math.floor(Math.random() * 2) + 1);
+    }, 5000);
+    return () => clearInterval(internalClock);
+  }, []);
+
+  const links = [
+    { name: 'Home', target: '#hero', id: 'hero' },
+    { name: 'About Script', target: '#about', id: 'about' },
+    { name: 'Ink Lab', target: '#lab', id: 'lab' },
+    { name: 'Learning Resources', target: '#resources', id: 'resources' },
+    { name: 'Gallery', target: '#gallery', id: 'gallery' },
+    { name: 'Our Team', target: '#team', id: 'team' },
+    { name: 'Contact Us', target: '#contact', id: 'contact' }
+  ];
+
+  const handleNavClick = (e, target) => {
+    e.preventDefault();
+    setIsOpen(false);
+    const element = document.querySelector(target);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <>
+      <nav className="fixed top-0 left-0 w-full z-50 bg-[#000000]/90 backdrop-blur-md border-b border-white/10 h-20 flex items-center justify-between px-8 md:px-16">
+        <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="text-xl font-serif tracking-widest uppercase text-white">
+          Stylish<span className="italic text-neutral-400">Strokes</span>
+        </a>
+
+        {/* Desktop Interface */}
+        <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+          {links.map((link) => (
+            <a
+              key={link.id}
+              href={link.target}
+              onClick={(e) => handleNavClick(e, link.target)}
+              className={`font-mono text-xs tracking-wider transition-all duration-300 uppercase ${
+                activeSection === link.id ? 'text-white border-b border-white pb-1 font-bold' : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              {link.name}
+            </a>
+          ))}
+          <div className="border-l border-white/20 pl-6 font-mono text-[11px] text-neutral-400 tracking-wider uppercase">
+            VISITORS: <span className="text-white font-bold tabular-nums">{visitorCount}</span>
+          </div>
+        </div>
+
+        {/* Mobile Control Activation */}
+        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white transition-colors hover:text-neutral-300">
+          {isOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </nav>
+
+      {/* Fluid Mobile Slide & Fade Matrix Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
+            className="fixed inset-0 z-40 bg-[#000000] pt-28 px-8 flex flex-col justify-between pb-16 lg:hidden"
+          >
+            <div className="flex flex-col space-y-6">
+              {links.map((link) => (
+                <a
+                  key={link.id}
+                  href={link.target}
+                  onClick={(e) => handleNavClick(e, link.target)}
+                  className={`font-serif text-3xl tracking-tight ${
+                    activeSection === link.id ? 'text-white italic pl-2 border-l border-white' : 'text-neutral-500'
+                  } transition-all`}
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+            <div className="font-mono text-xs text-neutral-500 border-t border-white/10 pt-6 uppercase">
+              LIVE PORTAL INDEX OVERSEE: <span className="text-white tracking-widest">{visitorCount}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+</file>
+
+<file path="src/components/StickyTicker.jsx">
+import React, { useState, useEffect } from 'react';
+
+export default function StickyTicker({ coords }) {
+  const [currentTime, setCurrentTime] = useState('');
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const clockEngine = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+    };
+    clockEngine();
+    const interval = setInterval(clockEngine, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.round(progress));
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  const rawTickerText = ` /// DATE: ${dateStr} | CURRENT_TIME: ${currentTime} | TELEMETRY_COORDS: LAT ${coords.lat} / LON ${coords.lon} | SCROLL_POS: ${scrollProgress}% /// STYLISHSTROKES SINGLE-PAGE LUXURY ARCHIVE MATRIX /// REVERING THE CADENCE OF INTENTIONAL INK METRICS /// `;
+
+  return (
+    <div className="fixed bottom-0 left-0 w-full bg-[#FFFFFF] text-[#000000] border-t border-neutral-200 z-50 h-9 flex items-center overflow-hidden select-none">
+      <div className="w-full flex whitespace-nowrap overflow-hidden">
+        {/* Elegant infinite text slide animation */}
+        <div className="animate-fluidMarquee flex font-mono text-[10px] tracking-[0.2em] uppercase py-1">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <span key={i} className="mr-12 font-medium">{rawTickerText}</span>
+          ))}
+        </div>
+      </div>
+
+      <style jsx global>{`
+        @keyframes fluidMarquee {
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .animate-fluidMarquee {
+          animation: fluidMarquee 35s linear infinite;
+        }
+      `}</style>
+    </div>
+  );
+}
+</file>
+
+<file path="src/index.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Playfair Display', 'Inter', system-ui, sans-serif;
+    background-color: #000000;
+    color: #FFFFFF;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: #FFFFFF;
+    color: #000000;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #000000;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #222222;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+  }
+}
+
+@layer components {
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
+
+  .editorial-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .editorial-container {
+      padding: 0 4rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .editorial-container {
+      padding: 0 6rem;
+    }
+  }
+
+  /* Elegant Fine Grid Paper Backdrop */
+  .paper-grid {
+    background-color: #FBFBFA;
+    background-image: 
+      linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .dark-grid {
+    background-color: #050505;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 35s linear infinite;
+}
+</file>
+
+<file path="src/main.jsx">
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+</file>
+
+<file path="tailwind.config.js">
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'ink-black': '#000000',
+        'pure-white': '#FFFFFF',
+        'charcoal': '#1A1A1A',
+        'paper': '#FBFBFA',
+        'off-white': '#F5F5F0',
+        'warm-gray': '#8A8A8A',
+        'light-gray': '#E5E5E0',
+      },
+      fontFamily: {
+        'display': ['"Bebas Neue"', 'Impact', 'sans-serif'],
+        'body': ['"Inter"', 'system-ui', 'sans-serif'],
+        'mono': ['"JetBrains Mono"', 'monospace'],
+        'serif': ['"Playfair Display"', 'Georgia', 'serif'],
+      },
+      letterSpacing: {
+        'ultra-wide': '0.3em',
+        'mega-wide': '0.5em',
+      },
+      fontSize: {
+        'display-xl': ['clamp(3rem, 10vw, 10rem)', { lineHeight: '0.9' }],
+        'display-lg': ['clamp(2.5rem, 8vw, 7rem)', { lineHeight: '0.95' }],
+        'display-md': ['clamp(2rem, 5vw, 4rem)', { lineHeight: '1' }],
+      },
+      animation: {
+        'ticker': 'ticker 30s linear infinite',
+        'fade-in': 'fadeIn 0.6s ease-out forwards',
+        'slide-up': 'slideUp 0.8s ease-out forwards',
+      },
+      keyframes: {
+        ticker: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(40px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+    },
+  },
+  plugins: [],
+}
+</file>
+
+<file path="vite.config.js">
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5173,
+    open: true
+  }
+})
+</file>
+
+</files>
